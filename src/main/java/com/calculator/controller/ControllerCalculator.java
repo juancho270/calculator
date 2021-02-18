@@ -22,12 +22,17 @@ public class ControllerCalculator {
     }
 
     @GetMapping(value = "/calculate")
-    public ResponseEntity<Double> calculate(@RequestParam(name="firstNumber") BigDecimal firstNumber,
-                             @RequestParam(name="secondNumber") BigDecimal secondNumber,
-                             @RequestParam(name="operator") String operator){
+    public ResponseEntity<String> calculate(@RequestParam(name = "firstNumber") BigDecimal firstNumber,
+                                            @RequestParam(name = "secondNumber") BigDecimal secondNumber,
+                                            @RequestParam(name = "operator") String operator) {
+        try {
             double result = this.serviceCalculator.calculate(firstNumber, secondNumber, operator);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<String>(String.valueOf(result), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
-    
+
 }
